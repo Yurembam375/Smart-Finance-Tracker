@@ -1,3 +1,4 @@
+import 'package:expense_tracker/main.dart';
 import 'package:expense_tracker/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,22 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Smart Finance Tracker'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            onPressed: () {
+              final currentMode = ref.read(themeModeProvider.notifier);
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              currentMode.state = isDark ? ThemeMode.light : ThemeMode.dark;
+            },
+          ),
+        ],
       ),
+
       body: transactionsAsync.when(
         data: (transactions) {
           final totalBalance = transactions.fold<double>(
@@ -97,8 +113,8 @@ class HomeScreen extends ConsumerWidget {
                                 spacing: 10,
                                 runSpacing: 8,
                                 children: categoryTotals.entries.map((entry) {
-                                  final color = Colors
-                                      .primaries[entry.key.hashCode %
+                                  final color =
+                                      Colors.primaries[entry.key.hashCode %
                                           Colors.primaries.length];
                                   return Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -135,8 +151,10 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     const Text(
                       'Recent Transactions',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 8),
 
@@ -150,8 +168,7 @@ class HomeScreen extends ConsumerWidget {
                     else
                       ...transactions
                           .take(10)
-                          .map((tx) => TransactionTile(transaction: tx))
-                          ,
+                          .map((tx) => TransactionTile(transaction: tx)),
                   ],
                 ),
               ),
@@ -165,9 +182,7 @@ class HomeScreen extends ConsumerWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => const AddTransactionScreen(),
-            ),
+            MaterialPageRoute(builder: (_) => const AddTransactionScreen()),
           );
         },
         child: const Icon(Icons.add),
