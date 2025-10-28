@@ -58,8 +58,7 @@ The app includes unit and widget tests to ensure reliable functionality.
 
 Example test file:
 
-bash
-Copy code
+
 test/
 ├── home_screen_test.dart             # UI tests for HomeScreen
 └── transaction_notifier_test.dart    # Logic tests for add/delete transactions
@@ -91,11 +90,8 @@ utils/	Helper classes, Hive initialization, etc.
 test/	Unit and widget test files
 
 🧾 Example Test Result
-bash
-Copy code
+
 00:03 +3: All tests passed!
-📸 Screenshots (optional)
-Add your screenshots here (e.g. Home Screen, Add Transaction screen).
 
 👨‍💻 Author
 Yurembam Sanatomba
