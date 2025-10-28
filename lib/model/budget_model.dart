@@ -13,9 +13,13 @@ class BudgetModel extends HiveObject {
   @HiveField(2)
   double spent;
 
+  @HiveField(3)
+  DateTime month; // For monthly tracking
+
   BudgetModel({
     required this.category,
     required this.limit,
-    required this.spent,
-  });
+    this.spent = 0.0,
+    DateTime? month,
+  }) : month = month ?? DateTime(DateTime.now().year, DateTime.now().month);
 }

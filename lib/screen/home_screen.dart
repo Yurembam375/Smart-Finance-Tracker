@@ -1,5 +1,6 @@
 import 'package:expense_tracker/main.dart';
 import 'package:expense_tracker/providers/budget_provider.dart';
+import 'package:expense_tracker/screen/budget_setup_screen.dart';
 import 'package:expense_tracker/widgets/budget_card.dart';
 import 'package:expense_tracker/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
@@ -17,20 +18,20 @@ class HomeScreen extends ConsumerWidget {
     final transactionsAsync = ref.watch(transactionsProvider);
     final budgets = ref.watch(budgetProvider);
     final notifier = ref.read(budgetProvider.notifier);
-
-    // Add sample budgets if none exist
-    // if (budgets.isEmpty) {
-    //   Future.microtask(() async {
-    //     await notifier.setBudget("Food", 10000);
-    //     await notifier.setBudget("Travel", 5000);
-    //     await notifier.setBudget("Shopping", 8000);
-    //   });
-    // }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Smart Finance Tracker'),
         centerTitle: true,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.account_balance_wallet_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const BudgetSetupScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(
               Theme.of(context).brightness == Brightness.dark

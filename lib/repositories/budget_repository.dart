@@ -8,21 +8,33 @@ class BudgetRepository {
   List<BudgetModel> getAllBudgets() => box.values.toList();
 
   Future<void> addOrUpdateBudget(String category, double limit) async {
-    final existing = box.get(category);
+    final now = DateTime.now();
+    final monthKey = '${category}_${now.year}_${now.month}';
+
+    final existing = box.get(monthKey);
     if (existing != null) {
       existing.limit = limit;
       await existing.save();
     } else {
-      final newBudget = BudgetModel(category: category, limit: limit, spent: 0);
-      await box.put(category, newBudget);
+      final newBudget = BudgetModel(category: category, limit: limit);
+      await box.put(monthKey, newBudget);
     }
   }
 
   Future<void> updateSpent(String category, double amount, bool isExpense) async {
-    final budget = box.get(category);
+    final now = DateTime.now();
+    final monthKey = '${category}_${now.year}_${now.month}';
+    final budget = box.get(monthKey);
+
     if (budget != null) {
       budget.spent += isExpense ? amount : -amount;
       await budget.save();
     }
+  }
+
+  Future<BudgetModel?> getBudget(String category) async {
+    final now = DateTime.now();
+    final monthKey = '${category}_${now.year}_${now.month}';
+    return box.get(monthKey);
   }
 }
