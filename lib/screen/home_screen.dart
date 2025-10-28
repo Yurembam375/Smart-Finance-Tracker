@@ -1,4 +1,6 @@
 import 'package:expense_tracker/main.dart';
+import 'package:expense_tracker/providers/budget_provider.dart';
+import 'package:expense_tracker/widgets/budget_card.dart';
 import 'package:expense_tracker/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +15,17 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionsAsync = ref.watch(transactionsProvider);
+    final budgets = ref.watch(budgetProvider);
+    final notifier = ref.read(budgetProvider.notifier);
 
+    // Add sample budgets if none exist
+    // if (budgets.isEmpty) {
+    //   Future.microtask(() async {
+    //     await notifier.setBudget("Food", 10000);
+    //     await notifier.setBudget("Travel", 5000);
+    //     await notifier.setBudget("Shopping", 8000);
+    //   });
+    // }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Smart Finance Tracker'),
@@ -169,6 +181,16 @@ class HomeScreen extends ConsumerWidget {
                       ...transactions
                           .take(10)
                           .map((tx) => TransactionTile(transaction: tx)),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Category Budgets',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ...budgets.map((b) => BudgetCard(budget: b)),
                   ],
                 ),
               ),

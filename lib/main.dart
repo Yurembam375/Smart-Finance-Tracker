@@ -1,4 +1,6 @@
+import 'package:expense_tracker/model/budget_model.dart';
 import 'package:expense_tracker/model/transaction_model.dart';
+import 'package:expense_tracker/repositories/transaction_repository.dart';
 import 'package:expense_tracker/screen/home_screen.dart';
 import 'package:expense_tracker/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -6,17 +8,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'repositories/transaction_repository.dart';
-
 /// Provider to manage light/dark theme mode
 final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapter(TransactionModelAdapter());
-  await Hive.openBox<TransactionModel>(TransactionRepository.boxName);
 
+  // Initialize Hive
+  await Hive.initFlutter();
+
+  // Register adapters
+  Hive.registerAdapter(TransactionModelAdapter());
+  Hive.registerAdapter(BudgetModelAdapter());
+
+  // Open boxes
+  await Hive.openBox<TransactionModel>(TransactionRepository.boxName);
+  await Hive.openBox<BudgetModel>('budgetsBox');
+
+  // Run app
   runApp(const ProviderScope(child: MyApp()));
 }
 
