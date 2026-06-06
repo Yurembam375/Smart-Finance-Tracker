@@ -95,7 +95,7 @@ test/	Unit and widget test files
 
 👨‍💻 Author
 Yurembam Sanatomba
-📍 Flutter Developer  @ Kaiztren Innovative Solutions LLP
+📍 Flutter Developer 
 💼 Passionate about building dynamic, responsive, and intelligent mobile applications using Flutter, Firebase, and modern state management tools.
 
 🪪 License
